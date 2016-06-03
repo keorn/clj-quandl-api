@@ -1,7 +1,7 @@
 (ns clj-quandl-api.core
   (:require [cheshire.core :refer [parse-string]]
             [org.httpkit.client :as http]
-            [clj-time.core :as t]))
+            [clj-time.format :as f]))
 
 (def ^:private api-key (atom nil))
 (defn set-api-key!
@@ -30,6 +30,18 @@
                         :end_date     date-time?})
 (defn- allowed? [[k v]] ((allowed k) v))
 
+(defn- keywordize
+  "Turn column names into neat keywords."
+  [s]
+  (-> s (clojure.string/replace #"\s" "-") clojure.string/lower-case keyword))
+(defn- clean-dataset
+  "Format the dataset nicely."
+  [d]
+  (update (zipmap (map keywordize (:column_names d))
+                  (apply map vector (:data d)))
+          :date
+          #(map f/parse %)))
+
 (defn quandl
   "Request dataset by Quandl code, uses the same parameters as Quandl API but keywordized."
   [dataset & {:as params}]
@@ -38,4 +50,4 @@
         {:keys [quandl_error dataset_data] :as resp} (parse-string response true)]
     (if quandl_error
         (println (:message quandl_error))
-        dataset_data)))
+        (clean-dataset dataset_data))))

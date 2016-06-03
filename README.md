@@ -5,7 +5,7 @@ Quandl API wrapper in Clojure
 
 ## Get it
 ```clojure
-[clj-quandl-api "0.1.1"]
+[clj-quandl-api "0.2.0"]
 
 ;; In your ns statement:
 (ns my.ns

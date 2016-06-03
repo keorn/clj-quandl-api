@@ -1,4 +1,4 @@
-(defproject clj-quandl-api "0.1.1"
+(defproject clj-quandl-api "0.2.0"
   :description "Clojure Quandl API wrapper"
   :url "http://github.com/keorn/clj-quandl-api"
   :license {:name "Eclipse Public License"

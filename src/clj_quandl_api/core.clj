@@ -3,7 +3,7 @@
             [org.httpkit.client :as http]
             [clj-time.core :as t]))
 
-(def api-key (atom nil))
+(def ^:private api-key (atom nil))
 (defn set-api-key!
   "Use your Quandl API key to avoid anonymous calls."
   [new-key]
@@ -20,14 +20,14 @@
 
 ;; Predicates for checking arguments.
 (defn- date-time? [d] (or (string? d) (instance? org.joda.time.DateTime d)))
-(def allowed {:collapse     #{:none :daily :weekly :monthly :quarterly :annual}
-              :transform    #{:none :rdiff :diff :cumul :normalize}
-              :order        #{:asc :desc}
-              :rows         integer?
-              :limit        integer?
-              :column_index integer?
-              :start_date   date-time?
-              :end_date     date-time?})
+(def ^:private allowed {:collapse     #{"none" "daily" "weekly" "monthly" "quarterly" "annual"}
+                        :transform    #{"none" "rdiff" "diff" "cumul" "normalize"}
+                        :order        #{"asc" "desc"}
+                        :rows         integer?
+                        :limit        integer?
+                        :column_index integer?
+                        :start_date   date-time?
+                        :end_date     date-time?})
 (defn- allowed? [[k v]] ((allowed k) v))
 
 (defn quandl
@@ -35,7 +35,7 @@
   [dataset & {:as params}]
   {:pre [(every? allowed? params)]}
   (let [response (request (assemble-url dataset) params)
-        {:keys [quandl_error dataset_data]} (:dataset_data (parse-string response true))]
+        {:keys [quandl_error dataset_data] :as resp} (parse-string response true)]
     (if quandl_error
         (println (:message quandl_error))
         dataset_data)))

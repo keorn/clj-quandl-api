@@ -47,7 +47,7 @@
   [dataset & {:as params}]
   {:pre [(every? allowed? params)]}
   (let [response (request (assemble-url dataset) params)
-        {:keys [quandl_error dataset_data] :as resp} (parse-string response true)]
+        {:keys [quandl_error dataset_data]} (parse-string response true)]
     (if quandl_error
         (println (:message quandl_error))
         (clean-dataset dataset_data))))

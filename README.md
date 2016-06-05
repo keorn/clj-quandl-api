@@ -5,7 +5,7 @@ Quandl API wrapper in Clojure
 
 ## Get it
 ```clojure
-[clj-quandl-api "0.2.0"]
+[clj-quandl-api "0.2.1"]
 
 ;; In your ns statement:
 (ns my.ns
@@ -36,9 +36,14 @@ The wrapper is just one function `quandl`, it sticks closely to conventions in A
 (quandl "WIKI/AAPL" :end_date (t/date-time 1986 10 14))
 ```
 
+API key can be also passed as an argument:
+```clojure
+(quandl "WIKI/AAPL" :api_key "H2O...")
+```
+
 ## License
 
-Copyright © 201 keorn
+Copyright © 206 keorn
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.

@@ -11,7 +11,7 @@
 
 (def ^:private base-url "https://www.quandl.com/api/v3/datasets/")
 (defn- request [url params]
-  (let [auth-params (assoc params :api_key @api-key)
+  (let [auth-params (merge {:api_key @api-key} params) ; Allow custom value.
         {:keys [status headers body error]} @(http/get url {:query-params auth-params})]
     (if error
         (println "Failed request, exception:" error)
